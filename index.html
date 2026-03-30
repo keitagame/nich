@@ -7,13 +7,39 @@
     <link rel="icon" href="nes.png" type="image/png">
     <style>
         body{
+margin:0;
     background-image: url("gr3nja.png");
   background-repeat: repeat;
   background-size: 80px 50px; /* タイルの大きさを指定 */
 }
+.bbs{
+display:flex;
+}
+ul{
+    padding-left: 0;
+      margin: 0;
+}
+li{
+padding-left: 0;
+      margin: 0;
+list-style: none;
+}
+.side{
+width:100px;
+border-right:1px solid black;
+height:100vh;
+background:rgb(238, 238, 238);
+}
     </style>
   </head>
   <body>
-  
+<div class="bbs">
+<div class="side">
+  <ul>
+<li><a href="/">入口</a></li>
+<li><a href="/">サンプル</a></li>
+</ul></div>
+<div class="main"></div>
+</div>
   </body>
 </html>
