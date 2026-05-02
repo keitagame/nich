@@ -1,0 +1,25 @@
+<html>
+<head>
+<title> 互ch BBS ..</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<frameset cols="120,*"> 
+	<frame src="bbsmenu.html" name="menu" onload='
+	    if (location.protocol != "https:" || !this.contentDocument) return;
+	    for (var i = 0; i < this.contentDocument.links.length; i++)
+	      if (this.contentDocument.links[i].target) continue;
+	      else if (this.contentDocument.links[i].protocol == "http:")
+	          this.contentDocument.links[i].protocol = "https:";
+	      else if (!this.contentDocument.links[i].protocol && /^http:/.test(this.contentDocument.links[i].href))
+	          this.contentDocument.links[i].href = this.contentDocument.links[i].href.replace(/^http:/, "https:");
+	'>
+	
+	<frame src="it.html" name="cont">
+	</frameset>
+<noframes><body bgcolor="#FFFFFF">
+
+</body></noframes>
+
+
+
+</html>
