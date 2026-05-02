@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: php-app
+    name: gokanch
     env: docker
     plan: free
     region: singapore
