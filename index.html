@@ -1,89 +1,25 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <title>似ちゃんねる</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="nes.png" type="image/png">
-    <style>
-        body{
-margin:0;
-    background-image: url("gr3nja.png");
-  background-repeat: repeat;
-  background-size: 80px 50px; /* タイルの大きさを指定 */
-}
-.bbs{
-width:100vw;
-display:flex;
-}
-ul{
-    padding-left: 0;
-      margin: 0;
-}
-li{
-padding-left: 10px;
-      margin: 0;
-list-style: none;
-}
-.side{
-width:100px;
-border-right:1px solid black;
-height:100vh;
-background:rgb(238, 238, 238);
-}
-table {
-background:rgb(227, 255, 255);
-width:80%;
-    margin: 0 auto;
-  border-collapse: separate;
-  border-spacing: 10;
-padding:1px;
-  border: 1px solid #333;
-}
-th, td {
-text-align:left;
-  border: 1px solid #333;
-  padding: 8px;
-}
-.main{
-width:100%;
-}
-    </style>
-  </head>
-  <body>
-<div class="bbs">
-<div class="side">
-  <ul>
-<li><a href="/">入口</a></li>
-<li><a href="/">サンプル</a></li>
-</ul></div>
-<div class="main">
+<html>
+<head>
+<title> 互ch BBS ..</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<frameset cols="120,*"> 
+	<frame src="bbsmenu.html" name="menu" onload='
+	    if (location.protocol != "https:" || !this.contentDocument) return;
+	    for (var i = 0; i < this.contentDocument.links.length; i++)
+	      if (this.contentDocument.links[i].target) continue;
+	      else if (this.contentDocument.links[i].protocol == "http:")
+	          this.contentDocument.links[i].protocol = "https:";
+	      else if (!this.contentDocument.links[i].protocol && /^http:/.test(this.contentDocument.links[i].href))
+	          this.contentDocument.links[i].href = this.contentDocument.links[i].href.replace(/^http:/, "https:");
+	'>
+	
+	<frame src="iyan.html" name="cont">
+	</frameset>
+<noframes><body bgcolor="#FFFFFF">
+<a href="bbslist.html">here</a>
+</body></noframes>
 
-<table>
-  <tr>
-    <th>入口@shinyabbs</th>
-    
-  </tr>
-  <tr>
-    <td>おやくそく</td>
-    
-  </tr>
-  
-</table>
-<br>
-<table>
-  <tr>
-    <th>すれ一覧</th>
-    
-  </tr>
-  <tr>
-    <td>りんく</td>
-    
-  </tr>
-  
-</table>
 
-</div>
-</div>
-  </body>
+
 </html>
