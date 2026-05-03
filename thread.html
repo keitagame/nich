@@ -33,7 +33,7 @@ const key = params.get('key');
 if (!bbs || !key) {
   document.body.innerHTML = 'bbs または key がありません';
 }
-
+/*
 async function loadDat() {
   const res = await fetch(`/${bbs}/dat/${key}.dat`, { cache: 'no-cache' });
   const text = await res.text();
@@ -73,6 +73,54 @@ async function loadDat() {
     container.appendChild(div);
   });
 }
+  */
+  function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+async function loadDat() {
+  const res = await fetch(`/${bbs}/dat/${key}.dat`, { cache: 'no-cache' });
+  const text = await res.text();
+  const lines = text.trim().split('\n');
+
+  const container = document.getElementById('reslist');
+  container.innerHTML = '';
+
+  lines.forEach((line, idx) => {
+    const cols = line.split('<>');
+    const no    = cols[0];
+    const name  = escapeHtml(cols[1]);
+    const mail  = escapeHtml(cols[2]);
+    const time  = escapeHtml(cols[3]);
+    const body  = escapeHtml(cols[4]);
+    const title = escapeHtml(cols[5]);
+
+    if (idx === 0) {
+      document.getElementById('title').textContent = title;
+    }
+
+    const bodyHtml = body.replace(
+      /(https?:\/\/\S+)/g,
+      '<a href="$1" target="_blank">$1</a>'
+    );
+
+    const div = document.createElement('div');
+    div.className = 'res';
+    div.innerHTML = `
+      <div class="meta">
+        <span>${no}</span> :
+        <span class="name">${mail ? '<a href="mailto:' + mail + '">' + name + '</a>' : name}</span>
+        <span>${time}</span>
+      </div>
+      <div class="body">${bodyHtml}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
 
 document.getElementById('postForm').addEventListener('submit', async (e) => {
   e.preventDefault();
