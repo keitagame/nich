@@ -6,26 +6,26 @@ use Encode qw(encode decode);
 
 my $q = CGI->new;
 
-# UTF-8 で受け取る
-my $bbs  = $q->param('bbs');
-my $key  = $q->param('key');
-my $name = $q->param('FROM') || '名無しさん';
-my $mail = $q->param('mail') || '';
-my $body = $q->param('MESSAGE') || '';
+# パラメータ（UTF-8 で来るので decode）
+my $bbs  = decode('UTF-8', $q->param('bbs'));
+my $key  = decode('UTF-8', $q->param('key'));
+my $name = decode('UTF-8', $q->param('FROM') || '名無しさん');
+my $mail = decode('UTF-8', $q->param('mail') || '');
+my $body = decode('UTF-8', $q->param('MESSAGE') || '');
 
-# fcgiwrap は /usr/sbin から実行されるため絶対パス必須
+# 絶対パス
 my $dir = "/var/www/html/$bbs";
 my $dat = "$dir/dat/$key.dat";
 
-# dat が存在しない
+# dat が無い
 if (!-e $dat) {
-    print "Content-Type: text/html; charset=UTF-8\n\n";
-    print "<html><body>スレッドがありません。</body></html>";
+    print "Content-Type: text/html; charset=Shift_JIS\n\n";
+    print encode('cp932', "<html><body>スレッドがありません。</body></html>");
     exit;
 }
 
-# dat 読み込み（UTF-8）
-open my $fh, "<:encoding(UTF-8)", $dat or die "Cannot open dat: $!";
+# dat 読み込み（Shift_JIS）
+open my $fh, "<:encoding(cp932)", $dat or die "Cannot open dat: $!";
 my @lines = <$fh>;
 close $fh;
 
@@ -39,16 +39,15 @@ my $time = sprintf("%04d/%02d/%02d(%s) %02d:%02d:%02d",
     $t[2], $t[1], $t[0]
 );
 
-# REMOTE_ADDR が無い場合もあるので保険
 my $ip = $ENV{'REMOTE_ADDR'} || "0.0.0.0";
 my $id = substr( unpack("H*", pack("C*", split(/\./, $ip))), 0, 8 );
 my $timecol = "$time ID:$id";
 
-# タイトル取得
+# タイトル
 my @c = split(/<>/, $lines[0]);
 my $title = $c[5];
 
-# 新規レス行（UTF-8）
+# 新規レス行（Shift_JIS に変換して書く）
 my $newline = join("<>",
     $no,
     $name,
@@ -59,9 +58,9 @@ my $newline = join("<>",
     ""
 ) . "\n";
 
-# dat 追記
-open my $fh2, ">>:encoding(UTF-8)", $dat or die "Cannot write dat: $!";
-print $fh2 $newline;
+# dat 追記（Shift_JIS）
+open my $fh2, ">>:encoding(cp932)", $dat or die "Cannot write dat: $!";
+print $fh2 encode('cp932', decode('UTF-8', $newline));
 close $fh2;
 
 # subject.txt 更新
@@ -69,7 +68,7 @@ my $subject = "$dir/subject.txt";
 my @subjects;
 
 if (-e $subject) {
-    open my $sfh, "<:encoding(UTF-8)", $subject;
+    open my $sfh, "<:encoding(cp932)", $subject;
     @subjects = <$sfh>;
     close $sfh;
 }
@@ -78,20 +77,20 @@ if (-e $subject) {
 my @newsubjects;
 foreach my $line (@subjects) {
     if ($line =~ /^$key\.dat<>\Q$title\E/) {
-        push @newsubjects, "$key.dat<>$title ($no)\n";
+        push @newsubjects, encode('cp932', "$key.dat<>$title ($no)\n");
     } else {
         push @newsubjects, $line;
     }
 }
 
 # 書き戻し
-open my $sfh2, ">:encoding(UTF-8)", $subject;
+open my $sfh2, ">:encoding(cp932)", $subject;
 print $sfh2 @newsubjects;
 close $sfh2;
 
-# レスポンス（UTF-8）
-print "Content-Type: text/html; charset=UTF-8\n\n";
-print <<'HTML';
+# レスポンス（Shift_JIS）
+print "Content-Type: text/html; charset=Shift_JIS\n\n";
+print encode('cp932', <<'HTML');
 <html>
 <head><title>書きこみました。</title></head>
 <body>書きこみました。</body>
