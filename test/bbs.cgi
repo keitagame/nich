@@ -14,7 +14,9 @@ my $mail = $q->param('mail') || '';
 my $body = $q->param('MESSAGE') || '';
 
 # 板ディレクトリ
-my $dir = "./$bbs";
+# my $dir = "./$bbs";
+# my $dat = "$dir/dat/$key.dat";
+my $dir = "/var/www/html/$bbs";
 my $dat = "$dir/dat/$key.dat";
 
 # dat が存在しない
