@@ -2,7 +2,7 @@ FROM debian:stable
 
 
 RUN apt-get update && \
-    apt-get install -y nginx fcgiwrap spawn-fcgi perl libcgi-pm-perl libencode-japanese-perl && \
+    apt-get install -y nginx fcgiwrap spawn-fcgi perl libcgi-pm-perl && \
     apt-get clean
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
