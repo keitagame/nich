@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スレ一覧</title>
+  <style>
+    body { font-family: sans-serif; }
+    .thread { padding: 4px 0; border-bottom: 1px solid #ddd; }
+    a { text-decoration: none; }
+  </style>
+</head>
+<body>
+<table border=1 cellspacing=7 cellpadding=3 width=95% bgcolor=#CCFFCC align=center>
+<tr><td><table border=0 cellpadding=4 width=99% align=center>
+<tr><td nowrap width='99%'><font size=+1 color=#000000><b>てすと＠互ch掲示板</b></font></td>
+    <td nowrap align=right valign=top><a href="javascript:switchReadJsMode();" style="background-color:dimgray;color:lightgreen;text-decoration:none;"></a>&nbsp;
+       
+       </td></tr>
+<tr><td colspan=2>
+</td></tr>
+</table></td></tr>
+
+</table><br>
+<td>
+
+
+</td></tr></table>
+<table border=1 cellspacing=7 cellpadding=3 width=95% bgcolor=#CCFFCC align=center>
+<tr><td><table border=0 cellpadding=4 width=99% align=left>
+<tr><td nowrap width='0%'><font size=+1 color=#000000><b></b></font></td>
+    <td nowrap align=left valign=top><a href="javascript:switchReadJsMode();" style="background-color:dimgray;color:lightgreen;text-decoration:none;"></a>&nbsp;
+     
+<h3 id="boardTitle">スレ一覧</h3>
+<div id="threads">読み込み中…</div>
+  
+       </td></tr>
+<tr><td colspan=2>
+</td></tr>
+</table></td></tr>
+
+</table><br>
+<td>
+<script>
+const params = new URLSearchParams(location.search);
+const bbs = params.get('bbs') || location.pathname.split('/')[1];  
+// /test/2ch.html → "test"
+
+async function loadSubject() {
+  const res = await fetch(`/${bbs}/subject.txt`, { cache: 'no-cache' });
+  const text = await res.text();
+  const lines = text.trim().split('\n');
+
+  const container = document.getElementById('threads');
+  container.innerHTML = '';
+
+  lines.forEach(line => {
+    const [dat, rest] = line.split('<>');
+    if (!dat || !rest) return;
+
+    const key = dat.replace('.dat', '');
+    const div = document.createElement('div');
+    div.className = 'thread';
+
+    div.innerHTML = `
+      <a href="/thread.html?bbs=${bbs}&key=${key}">
+        ${rest}
+      </a>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+async function loadSetting() {
+  const res = await fetch(`/${bbs}/setting.txt`);
+  const text = await res.text();
+  const titleLine = text.split('\n').find(l => l.startsWith('BBS_TITLE='));
+  if (titleLine) {
+    document.getElementById('boardTitle').textContent = titleLine.replace('BBS_TITLE=', '').trim();
+  }
+}
+
+loadSetting();
+loadSubject();
+</script>
+
+</body>
+</html>
