@@ -1,8 +1,8 @@
-FROM debian:bullseye
+FROM debian:stable
 
 RUN apt-get update && \
-    apt-get install -y nginx fcgiwrap spawn-fcgi perl \
-                       libcgi-pm-perl libencode-japanese-perl && \
+    apt-get install -y nginx fcgiwrap spawn-fcgi perl libcgi-pm-perl cpanminus && \
+    cpanm Encode::JP && \
     apt-get clean
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
