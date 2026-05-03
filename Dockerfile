@@ -6,6 +6,6 @@ RUN apt-get update && \
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY . /var/www/html
-RUN chmod -R 755 /var/www/html/test/*.cgi
+RUN chmod -R 755 /var/www/html/test/bbs.cgi
 CMD spawn-fcgi -s /var/run/fcgiwrap.socket -M 766 /usr/sbin/fcgiwrap && \
     nginx -g "daemon off;"
