@@ -4,14 +4,26 @@ use warnings;
 use CGI;
 use Encode qw(encode decode);
 
+# my $q = CGI->new;
+
+# my $bbs   = $q->param('bbs');
+# my $title = $q->param('title');
+# my $name  = $q->param('FROM') || '名無しさん';
+# my $mail  = $q->param('mail') || '';
+# my $body  = $q->param('MESSAGE') || '';
 my $q = CGI->new;
 
-my $bbs   = $q->param('bbs');
-my $title = $q->param('title');
-my $name  = $q->param('FROM') || '名無しさん';
-my $mail  = $q->param('mail') || '';
-my $body  = $q->param('MESSAGE') || '';
+# --- ここから追加 ---
+# フォームから送られてくるShift_JISのデータを、Perl内部で扱える型に変換します
+my $bbs   = decode('Shift_JIS', $q->param('bbs')   || '');
+my $title = decode('Shift_JIS', $q->param('title') || '');
+my $name  = decode('Shift_JIS', $q->param('FROM')  || '名無しさん');
+my $mail  = decode('Shift_JIS', $q->param('mail')  || '');
+my $body  = decode('Shift_JIS', $q->param('MESSAGE') || '');
+# --- ここまで追加 ---
 
+# もし「(日 月 火...)」などの日本語が化ける場合は、
+# コード自体が UTF-8 で保存されているか確認してください。
 # 必須チェック
 if (!$bbs || !$title || !$body) {
     print "Content-Type: text/html; charset=UTF-8\n\n";
